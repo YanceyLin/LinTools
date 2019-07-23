@@ -30,6 +30,24 @@ public class IndicationTestActivity extends Activity {
 
         viewPager.setCurrentItem(0);
 
-        dotCircleIndicator.attachToViewpager(viewPager);
+        //也可直接放入viewpager
+        //dotCircleIndicator.attachToViewpager(viewPager);
+        dotCircleIndicator.setCircleCount(viewpageAdapter.getCount());
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                dotCircleIndicator.onPageScrolled(i, v, i1);
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 }

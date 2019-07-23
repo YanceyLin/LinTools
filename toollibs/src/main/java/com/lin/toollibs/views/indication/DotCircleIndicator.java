@@ -70,7 +70,7 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
 
     //当前选中的位置
     private int mSelectedIndex = 0;
-    private int count;
+    private int count = 2;
 
     //第一阶段运动
     private int MOVE_STEP_ONE = 1;
@@ -90,7 +90,7 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
     public static int DIRECTION_LEFT = 1;
     //向左滑 向右滚动
     public static int DIRECTION_RIGHT = 2;
-    private static final String TAG="tag";
+    private static final String TAG = "tag";
 
     Interpolator accelerateinterpolator = new AccelerateDecelerateInterpolator();
 
@@ -128,13 +128,16 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
     }
 
     private void initattrs(AttributeSet attrs) {
-        TypedArray typedArray=getContext().obtainStyledAttributes(attrs, R.styleable.DotCircleIndicator);
-        mSelectedColor=typedArray.getColor(R.styleable.DotCircleIndicator_selectedColor,0xFFFFFFFF);
-        mUnSelectedColor=typedArray.getColor(R.styleable.DotCircleIndicator_unSelectedColor,0xFFAAAAAA);
-        mRadius=typedArray.getDimension(R.styleable.DotCircleIndicator_selectedRaduis,mRadius);
-        mNomarlRadius=typedArray.getDimension(R.styleable.DotCircleIndicator_unSelectedRaduis,mNomarlRadius);
-        distance=typedArray.getDimension(R.styleable.DotCircleIndicator_spacing,distance);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.DotCircleIndicator);
+        mSelectedColor = typedArray.getColor(R.styleable.DotCircleIndicator_selectedColor, 0xFFFFFFFF);
+        mUnSelectedColor = typedArray.getColor(R.styleable.DotCircleIndicator_unSelectedColor, 0xFFAAAAAA);
+        mRadius = typedArray.getDimension(R.styleable.DotCircleIndicator_selectedRaduis, mRadius);
+        mNomarlRadius = typedArray.getDimension(R.styleable.DotCircleIndicator_unSelectedRaduis, mNomarlRadius);
+        distance = typedArray.getDimension(R.styleable.DotCircleIndicator_spacing, distance);
+        count = typedArray.getInteger(R.styleable.DotCircleIndicator_count, count);
         typedArray.recycle();
+
+        setCircleCount(count);
     }
 
     @Override
@@ -209,6 +212,7 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
 
     /**
      * 转化整体进度值使两个阶段的运动进度都是0-1
+     *
      * @param progress 当前整体进度
      */
     public void setProgress(float progress) {
@@ -425,8 +429,9 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
 
     /**
      * 获取当前值(适用分阶段变化的值)
+     *
      * @param start 初始值
-     * @param end  终值
+     * @param end   终值
      * @param step  第几活动阶段
      * @return
      */
@@ -437,10 +442,12 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
             return start + (end - start) * mProgress2;
         }
     }
+
     /**
      * 获取当前值（适用全过程变化的值）
+     *
      * @param start 初始值
-     * @param end  终值
+     * @param end   终值
      * @return
      */
     public float getValueForAll(float start, float end) {
@@ -449,8 +456,9 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
 
     /**
      * 通过进度获取当前值
-     * @param start 初始值
-     * @param end 终值
+     *
+     * @param start    初始值
+     * @param end      终值
      * @param progress 当前进度
      * @return
      */
@@ -460,6 +468,7 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
 
     /**
      * 获取圆心X坐标
+     *
      * @param index 第几个圆
      * @return
      */
@@ -484,16 +493,22 @@ public class DotCircleIndicator extends View implements ViewPager.OnPageChangeLi
         mOriginProgress = 0;
     }
 
-    /***/
+    /**
+     * 指定对应的数目
+     */
+    public void setCircleCount(int count) {
+        this.count = count;
+        moveToNext();
+        mDrection = DIRECTION_RIGHT;
+        invalidate();
+    }
+
     /**
      * 绑定viewpager
      */
     public void attachToViewpager(ViewPager viewPager) {
         viewPager.addOnPageChangeListener(this);
-        count = viewPager.getAdapter().getCount();
-        moveToNext();
-        mDrection=DIRECTION_RIGHT;
-        invalidate();
+        setCircleCount(viewPager.getAdapter().getCount());
     }
 
 
