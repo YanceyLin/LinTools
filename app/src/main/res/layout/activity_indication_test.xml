@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.lin.toollibs.views.indication.DotCircleIndicator
+        android:id="@+id/dotIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="20dp"
+        app:selectedColor="@android:color/holo_orange_dark"
+        app:selectedRaduis="10dp"
+        app:spacing="20dp"
+        app:unSelectedColor="@android:color/holo_orange_light"
+        app:unSelectedRaduis="8dp" />
+
+</RelativeLayout>

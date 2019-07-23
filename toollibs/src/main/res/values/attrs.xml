@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleIndicator">
+        <!-- Whether or not the indicators should be centered. -->
+        <!-- 圆点半径 -->
+        <attr name="circleRadius" format="dimension" />
+        <!-- Color of the filled circle that represents the current page. -->
+        <!-- 圆点边框宽度 -->
+        <attr name="circleStroke" format="dimension" />
+        <!-- Color of the filled circles that represents pages. -->
+        <!-- 圆点之间的空白宽度/距离 -->
+        <attr name="circleDivide" format="dimension" />
+
+        <!-- 圆点填充颜色 -->
+        <attr name="circleFillColor" format="color" />
+        <!-- 圆点未选中的颜色 -->
+        <attr name="circleEmptyColor" format="color" />
+
+        <!-- 圆点数目 -->
+        <attr name="circleCount" format="integer" />
+
+    </declare-styleable>
+
+    <declare-styleable name="DotCircleIndicator">
+        <attr name="selectedColor" format="color" />
+        <attr name="unSelectedColor" format="color" />
+        <attr name="selectedRaduis" format="dimension" />
+        <attr name="unSelectedRaduis" format="dimension" />
+        <attr name="spacing" format="dimension" />
+    </declare-styleable>
+</resources>
