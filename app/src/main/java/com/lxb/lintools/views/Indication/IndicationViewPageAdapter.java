@@ -1,4 +1,4 @@
-package com.lxb.lintools.views;
+package com.lxb.lintools.views.Indication;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,12 +12,12 @@ import com.lxb.lintools.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewpageAdapter extends PagerAdapter {
+public class IndicationViewPageAdapter extends PagerAdapter {
 
     Context context;
     List<View> views = new ArrayList<>();
 
-    public ViewpageAdapter(Context context) {
+    public IndicationViewPageAdapter(Context context) {
         this.context = context;
 
 

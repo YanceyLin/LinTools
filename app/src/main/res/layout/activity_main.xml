@@ -4,13 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button android:id="@+id/bt_circle_indication"
+    <Button
+        android:id="@+id/bt_circle_indication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:text="ViewPage园点指示器" />
+
+    <Button
+        android:id="@+id/bt_life_cycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="生命周期监听测试" />
 
 </LinearLayout>

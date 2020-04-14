@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.lxb.lintools.views.IndicationTestActivity;
+import com.lxb.lintools.life.XLifeCycleTestActivity;
+import com.lxb.lintools.views.Indication.IndicationTestActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.bt_circle_indication).setOnClickListener(this);
+        findViewById(R.id.bt_life_cycle).setOnClickListener(this);
     }
 
     @Override
@@ -23,7 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_circle_indication:
                 startActivity(new Intent(MainActivity.this, IndicationTestActivity.class));
                 break;
-
+            case R.id.bt_life_cycle:
+                startActivity(new Intent(MainActivity.this, XLifeCycleTestActivity.class));
+                break;
             default:
                 break;
         }
