@@ -45,4 +45,9 @@ public interface XLifecycleListener extends View.OnAttachStateChangeListener {
      */
     void onDestroy();
 
+    /**
+     * 界面碎片焦点的变更
+     */
+    void onFragmentFocusChanged(boolean inFocused);
+
 }

@@ -3,12 +3,16 @@ package com.lin.toollibs.views.life;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
+import com.lin.toollibs.R;
 import com.lin.toollibs.views.life.fragment.XLifeFragment;
 import com.lin.toollibs.views.life.fragment.XLifeSupportFragment;
 import com.lin.toollibs.views.life.listener.XLifecycleListener;
@@ -31,17 +35,7 @@ public class XLifeManager implements XLifecycleListener {
 
     public static XLifeManager with(Fragment supportFragment) {
         if (!checkNull(supportFragment)) {
-            View view = supportFragment.getView();
-            return new XLifeManager(view);
-        } else {
-            return null;
-        }
-    }
-
-    public static XLifeManager with(android.app.Fragment fragment) {
-        if (!checkNull(fragment)) {
-            View view = fragment.getView();
-            return new XLifeManager(view);
+            return new XLifeManager(supportFragment);
         } else {
             return null;
         }
@@ -61,6 +55,7 @@ public class XLifeManager implements XLifecycleListener {
 
 
     private Context context;
+    private Fragment fragment;
     private View view;
     private XLifecycleListener lifecycleListener;
 
@@ -68,11 +63,16 @@ public class XLifeManager implements XLifecycleListener {
         this.context = context;
     }
 
+    public XLifeManager(Fragment frag) {
+        this.fragment = frag;
+        if (frag == null) return;
+        context = frag.getContext();
+    }
+
     public XLifeManager(View view) {
         this.view = view;
-        if (view != null) {
-            context = view.getContext();
-        }
+        if (view == null) return;
+        context = view.getContext();
     }
 
     public XLifeManager setLifeCycleListener(XLifecycleListener listener) {
@@ -86,7 +86,42 @@ public class XLifeManager implements XLifecycleListener {
         }
         if (context != null && context instanceof Activity) {
             register(context);
+            if (view != null) {
+                fragment = getFragmentByView(view);
+            }
         }
+        if (fragment != null && fragment.getView() != null) {
+            register(fragment);
+        }
+    }
+
+    private Fragment getFragmentByView(View view) {
+        if (view.getId() == View.NO_ID) {
+            view.setId(R.id.life_manage_default_id);
+        }
+        if (context instanceof FragmentActivity) {
+            for (Fragment fragment : ((FragmentActivity) context).getSupportFragmentManager().getFragments()) {
+                if (fragment.getView() != null && fragment.getView().findViewById(view.getId()) == view) {
+                    return fragment;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void register(final Fragment fragment) {
+        fragment.getView().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                if (fragment.getView() == null) return;
+                if (fragment.getView() instanceof ViewGroup) {
+                    ViewGroup viewGroup = (ViewGroup) fragment.getView();
+                    onFragmentFocusChanged(viewGroup.getFocusedChild() != null);
+                } else {
+                    onFragmentFocusChanged(fragment.getView().hasFocus());
+                }
+            }
+        });
     }
 
     private void register(Context context) {
@@ -99,7 +134,7 @@ public class XLifeManager implements XLifecycleListener {
             if (!fragment.isAdded()) {
                 fm.beginTransaction().add(fragment, FRAGMENT_MANAGER_TAG).commitAllowingStateLoss();
             }
-        } else if (context instanceof Activity && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+        } else if (context instanceof Activity) {
             Activity activity = (Activity) context;
             XLifeFragment fragment = (XLifeFragment) activity.getFragmentManager().findFragmentByTag(FRAGMENT_MANAGER_TAG);
             fragment = fragment == null ? new XLifeFragment() : fragment;
@@ -122,16 +157,14 @@ public class XLifeManager implements XLifecycleListener {
 
     @Override
     public void onResume() {
-        if (lifecycleListener != null) {
-            lifecycleListener.onResume();
-        }
+        if (lifecycleListener == null) return;
+        lifecycleListener.onResume();
     }
 
     @Override
     public void onPause() {
-        if (lifecycleListener != null) {
-            lifecycleListener.onPause();
-        }
+        if (lifecycleListener == null) return;
+        lifecycleListener.onPause();
     }
 
     @Override
@@ -146,22 +179,25 @@ public class XLifeManager implements XLifecycleListener {
 
     @Override
     public void onDestroy() {
-        if (lifecycleListener != null) {
-            lifecycleListener.onDestroy();
-        }
+        if (lifecycleListener == null) return;
+        lifecycleListener.onDestroy();
+    }
+
+    @Override
+    public void onFragmentFocusChanged(boolean inFocus) {
+        if (lifecycleListener == null) return;
+        lifecycleListener.onFragmentFocusChanged(inFocus);
     }
 
     @Override
     public void onViewAttachedToWindow(View v) {
-        if (lifecycleListener != null) {
-            lifecycleListener.onViewAttachedToWindow(v);
-        }
+        if (lifecycleListener == null) return;
+        lifecycleListener.onViewAttachedToWindow(v);
     }
 
     @Override
     public void onViewDetachedFromWindow(View v) {
-        if (lifecycleListener != null) {
-            lifecycleListener.onViewDetachedFromWindow(v);
-        }
+        if (lifecycleListener == null) return;
+        lifecycleListener.onViewDetachedFromWindow(v);
     }
 }

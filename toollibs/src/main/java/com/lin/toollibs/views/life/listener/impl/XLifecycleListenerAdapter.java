@@ -48,4 +48,9 @@ public class XLifecycleListenerAdapter implements XLifecycleListener {
     public void onDestroy() {
 
     }
+
+    @Override
+    public void onFragmentFocusChanged(boolean inFocused) {
+
+    }
 }

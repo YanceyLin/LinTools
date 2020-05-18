@@ -53,6 +53,7 @@ public class XLifeCycleTestActivity extends AppCompatActivity implements View.On
     private void init() {
 
         lifecycleListener = new XLifecycleListener() {
+
             @Override
             public void onStart() {
                 Toast.makeText(XLifeCycleTestActivity.this, "Activity—onStart", Toast.LENGTH_SHORT).show();
@@ -61,6 +62,16 @@ public class XLifeCycleTestActivity extends AppCompatActivity implements View.On
             @Override
             public void onResume() {
                 Toast.makeText(XLifeCycleTestActivity.this, "Activity—onResume", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+
             }
 
             @Override
@@ -76,6 +87,11 @@ public class XLifeCycleTestActivity extends AppCompatActivity implements View.On
             @Override
             public void onDestroy() {
                 Toast.makeText(XLifeCycleTestActivity.this, "Activity—onDestroy", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFragmentFocusChanged(boolean inFocused) {
+
             }
 
         };
